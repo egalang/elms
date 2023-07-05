@@ -1,0 +1,261 @@
+<odoo>
+    <record id="view_loans_pivot" model="ir.ui.view">
+        <field name="name">loans.pivot</field>
+        <field name="model">loans.main</field>
+        <field name="arch" type="xml">
+            <pivot string="Loans" sample="1">
+                <field name="company_name" type="row"/>
+                <field name="principal" type="measure"/>
+            </pivot>
+        </field>
+    </record>
+
+    <record id="view_loans_main_form" model="ir.ui.view">
+        <field name="name">loans.main.form</field>
+        <field name="model">loans.main</field>
+        <field name="arch" type="xml">
+        <form>
+            <header>
+                <field name="stage" widget="statusbar" options="{'clickable':'1'}" />
+            </header>
+            <sheet>
+                <div class="oe_title">
+                    <h1> 
+                        <field name="pn_number" style="font-weight: bold;"/>
+                    </h1>
+                </div>
+                <group>
+                    <group>
+                        <field name="company_name" class="oe_inline"/>
+                        <field name="bank_name" class="oe_inline"/>
+                        <field name="loan_date" class="oe_inline"/>
+                        <!-- <field name="availment_entry" class="oe_inline"/>
+                        <field name="settlement_entry" class="oe_inline"/>
+                        <field name="remarks" class="oe_inline"/> -->
+                        <field name="payment_type" class="oe_inline"/>
+                    </group>
+                    <group>
+                        <field name="principal" class="oe_inline"/>
+                        <field name="interest" class="oe_inline"/>
+                        <field name="DST" class="oe_inline"/>
+                        <field name="total_amount" class="oe_inline"/>
+                        <!-- <field name="type_1" class="oe_inline"/>
+                        <field name="type_2" class="oe_inline"/> -->
+                        <!-- <field name="stage" class="oe_inline"/> -->
+                    </group>
+
+                    <notebook>
+                        <page name="general_tab" string="General">
+                            <group>
+                                <group>
+                                    <field name="availment_entry" class="oe_inline"/>
+                                    <field name="settlement_entry" class="oe_inline"/>
+                                    <field name="remarks" class="oe_inline"/>
+                                </group>
+                                <group>
+                                    <field name="type_1" class="oe_inline"/>
+                                    <field name="type_2" class="oe_inline"/>
+                                </group>
+                            </group>
+                        </page>
+                    </notebook>
+                </group>
+            </sheet>
+            <div class="oe_chatter">
+                <field name="message_follower_ids"/>
+                <field name="activity_ids"/>
+                <field name="message_ids"/>
+            </div>
+        </form>
+        </field>
+    </record>
+
+    <record id="view_loans_tree" model="ir.ui.view">
+        <field name="name">loans.main.tree</field>
+        <field name="model">loans.main</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="pn_number"/>
+                <field name="company_name"/>
+                <field name="bank_name"/>
+                <field name="loan_date"/>
+                <field name="principal"/>
+                <field name="interest"/>
+                <field name="DST" optional="hide"/>
+                <field name="total_amount" optional="hide"/>
+                <field name="remarks" optional="hide"/>
+                <field name="payment_type" optional="hide"/>
+                <field name="availment_entry" optional="hide"/>
+                <field name="settlement_entry" optional="hide"/>
+                <field name="type_1" optional="hide"/>
+                <field name="type_2" optional="hide"/>
+                <field name="stage"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_loans_main_kanban" model="ir.ui.view">
+        <field name="name">loans.main.kanban</field>
+        <field name="model">loans.main</field>
+        <field name="arch" type="xml">
+            <kanban default_group_by="stage">
+                <field name="id"/>
+                <field name="pn_number"/>
+                <field name="principal"/>
+                <field name="interest"/>
+                <field name="total_amount"/>
+                <templates>
+                    <t t-name="kanban-box">
+                        <!-- <a t-attf-href="#kanban-view/#{record.id}" class="oe_kanban_global_click"> -->
+                        <div t-attf-class="oe_kanban_global_click">
+                            <div class="oe_kanban_content">
+                                <h2><field name="pn_number"/></h2>
+                                <ul>
+                                    <!-- <li>PN Number: <field name="pn_number"/></li> -->
+                                    <li>Due Date: <field name="loan_date"/></li>
+                                    <li>Bank: <field name="bank_name"/></li>
+                                    <li>Company: <field name="company_name"/></li>
+                                    <li>Principal: <field name="principal"/></li>
+                                    <li>Interest: <field name="interest"/></li>
+                                    <!-- <p>PN Number: <field name="pn_number"/></p>
+                                    <p>Principal: <field name="principal"/></p>
+                                    <p>Interest: <field name="interest"/></p>
+                                    <p>Total Amount: <field name="total_amount"/></p> -->
+                                </ul>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <record id="view_loans_main_calendar" model="ir.ui.view">
+        <field name="name">loans.main.calendar</field>
+        <field name="model">loans.main</field>
+        <field name="arch" type="xml">
+            <calendar string="Loans Calendar" date_start="loan_date" color="color" mode="month">
+                <field name="loan_date"/>
+                <field name="company_name"/>
+                <field name="bank_name"/>
+                <field name="pn_number"/>
+                <field name="principal"/>
+                <field name="interest"/>
+                <field name="total_amount"/>
+            </calendar>
+        </field>
+    </record>
+
+     <record id="view_loan_summary_form" model="ir.ui.view">
+        <field name="name">Loan Summary</field>
+        <field name="model">loans.summary</field>
+        <field name="arch" type="xml">
+            <form string="Loan Summary">
+                <header>
+                    <button name="display_loan_records" string="Display Loan Records" type="object" class="oe_highlight"/>
+                </header>
+                <group> 
+                    <field name="company_id"/>
+                    <field name="bank_id"/>
+                    <field name="credit_line"/>
+                    <field name="principal"/>
+                </group>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_loan_summary_tree" model="ir.ui.view">
+        <field name="name">Loan Summary</field>
+        <field name="model">loans.summary</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="company_id" groupby="True"/>
+                <field name="bank_id" groupby="True"/>
+                <field name="credit_line" sum="Total Credit Line"/>
+                <!-- <field name="credit_line"/> -->
+                <field name="principal" sum="Total Principal Amount"/>
+                <!-- <field name="principal"/> -->
+                <field name="available_balance" sum="Total Available Balance"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="loans_main_action" model="ir.actions.act_window">
+        <field name="name">Loans</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">loans.main</field>
+        <field name="view_mode">tree,form,kanban,calendar,pivot</field>
+        <field name="target">current</field>
+    </record>
+
+    <record id="loans_stages_action" model="ir.actions.act_window">
+        <field name="name">Stages</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">loans.stage</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <record id="loans_companies_action" model="ir.actions.act_window">
+        <field name="name">Companies</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">res.partner</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <record id="loans_banks_action" model="ir.actions.act_window">
+        <field name="name">Banks</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">res.bank</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <record id="loans_summary_action" model="ir.actions.act_window">
+        <field name="name">Loan Summary</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">loans.summary</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <record id="new_stage_id" model="loans.stage">
+        <field name="name">New</field>
+    </record>
+
+    <menuitem id="menu_loans_root"
+        name="Loans"
+        sequence="10"
+        action="loans_main_action"/>
+
+    <menuitem id="menu_loan_summary"
+        name="Credit Line"
+        parent="menu_loans_root"
+        sequence="10"
+        action="loans_summary_action"/>
+
+    <menuitem id="menu_loans_configuration"
+        name="Configuration"
+        parent="menu_loans_root"
+        sequence="10"/>
+
+    <menuitem id="menu_loans_stages" 
+        name="Stages"
+        parent="menu_loans_configuration" 
+        sequence="10"
+        action="loans_stages_action"/>
+
+    <menuitem id="menu_loans_companies" 
+        name="Companies"
+        parent="menu_loans_configuration" 
+        sequence="11"
+        action="loans_companies_action"/>
+
+    <menuitem id="menu_loans_banks" 
+        name="Banks"
+        parent="menu_loans_configuration" 
+        sequence="12"
+        action="loans_banks_action"/>
+    
+    
+
+    
+
+</odoo>
