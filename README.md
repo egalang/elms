@@ -1,2 +1,2 @@
 # elms
-Loan Management module for Odoo
+Electronic Loan Management System module for Odoo
