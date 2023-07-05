@@ -48,7 +48,7 @@ class loans(models.Model):
           ('pn_renewal_extension', 'PN Renewal/Extension'),
           ('partial_payment', 'Partial Payment'),
           ('rental_pdc', 'Rental w/ PDCs')
-    ], string='Action', tracking=True, default='full_payment')
+    ], string='Action', tracking=True)
      color = fields.Integer('Color', compute='_compute_color', tracking=True)
      
      def name_get(self):
@@ -81,4 +81,5 @@ class loans(models.Model):
         action = self.env.ref('loans_summary.view_loan_summary_form').read()[0]
         action['domain'] = [('company_id', '=', self.company_name.id)]
         return action
+
   

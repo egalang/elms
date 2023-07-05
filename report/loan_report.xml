@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        
+        <report
+            id="report_loan_entry_html"
+            string="Loan Entries HTML"
+            model="loans.main"
+            report_type="qweb-html"
+            name="loans.report_loan_entries"
+            file="loans.report_loan_entries"
+        />
+
+        <report
+            id="report_loan_entry"
+            string="Loan Entries"
+            model="loans.main"
+            report_type="qweb-pdf"
+            name="loans.report_loan_entries"
+            file="loans.report_loan_entries"
+            attachment_use="True"
+            attachment="'(object.company_name.name) Loan Entries.pdf'"
+        />
+
+        <template id="report_loan_entries">
+            <t t-call="web.html_container">
+                <t t-set="count" t-value="0"/>
+                <div class="page">
+                    <h2>Loan Entries</h2>
+                    <table class="table table-condensed">
+                        <thead>
+                            <tr>
+                                <th>Company</th>
+                                <th>Date</th>
+                                <th>Bank</th>
+                                <th>PN Number</th>
+                                <th>Principal</th>
+                                <th>Interest</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <t t-foreach="docs" t-as="doc">
+                                <tr t-if="count % 10 == 0" t-set="count" t-value="count + 1"/>
+                                <tr>
+                                    <td><span t-field="doc.company_name.name"/></td>
+                                    <td><span t-field="doc.loan_date"/></td>
+                                    <td><span t-field="doc.bank_name.name"/></td>
+                                    <td><span t-field="doc.pn_number"/></td>
+                                    <td><span t-field="doc.principal"/></td>
+                                    <td><span t-field="doc.interest"/></td>
+                                </tr>
+                            </t>
+                        </tbody>
+                    </table>
+                </div>
+            </t>
+        </template>
+
+        
+
+
+
+
+
+
+
+
+
+    </data>
+</odoo>
