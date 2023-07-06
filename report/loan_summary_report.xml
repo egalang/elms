@@ -30,6 +30,7 @@
                             <tr>
                                 <th>Company</th>
                                 <th>Bank</th>
+                                <th>Loan Type</th>
                                 <th>Credit Line</th>
                                 <th>Total Principal Amount</th>
                                 <th>Available Balance</th>
@@ -41,6 +42,7 @@
                                 <tr>
                                     <td><span t-field="doc.company_id.name"/></td>
                                     <td><span t-field="doc.bank_id.name"/></td>
+                                    <td><span t-field="doc.type"/></td>
                                     <td><span t-field="doc.credit_line"/></td>
                                     <td><span t-field="doc.principal"/></td>
                                     <td><span t-field="doc.available_balance"/></td>

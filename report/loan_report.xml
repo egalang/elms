@@ -1,15 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <data>
-        
-        <report
-            id="report_loan_entry_html"
-            string="Loan Entries HTML"
-            model="loans.main"
-            report_type="qweb-html"
-            name="loans.report_loan_entries"
-            file="loans.report_loan_entries"
-        />
 
         <report
             id="report_loan_entry_html"
@@ -23,13 +14,12 @@
         
         <report
             id="report_loan_entry"
-            string="Loan Entries"
             model="loans.main"
-            report_type="qweb-pdf"
+            string="Loan Entries"
             name="elms.report_loan_entries"
+            report_type="qweb-pdf"
             file="elms.report_loan_entries"
-            attachment_use="True"
-            attachment="'(object.company_name.name) Loan Entries.pdf'"
+            menu="True"
         />
 
         <template id="report_loan_entries">
