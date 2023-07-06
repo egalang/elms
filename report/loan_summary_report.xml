@@ -1,34 +1,14 @@
 <odoo>
     <data>
+
         <report
-            id="report_loan_summary"
+            id="report_loan_summary_html"
+            string="Loan Summary HTML"
             model="loans.summary"
-            string="Loan Summary"
+            report_type="qweb-html"
             name="loans.report_loan_summaries"
-            report_type="qweb-pdf"
             file="loans.report_loan_summaries"
-            menu="True"
         />
-        <template id="report_loan_summaries">
-            <t t-call="web.html_container">
-                <t t-foreach="docs" t-as="summaries">
-                    <div class="page">
-                        <h2>Loan Summary</h2>
-                        <p>Bank ID: <span t-field="summary.bank_id.name"/></p>
-                        <p>Company ID: <span t-field="summary.company_id.name"/></p>
-                        <p>Principal: <span t-field="summary.principal"/></p>
-                        <p>Credit Line: <span t-field="summary.credit_line"/></p>
-                        <p>Available Balance: <span t-field="summary.available_balance"/></p>
-                    </div>
-                </t>
-            </t>
-        </template>
-    </data>
-</odoo>
-
-
-<!-- <odoo>
-    <data>
 
         <report
             id="report_loan_summary"
@@ -38,42 +18,41 @@
             name="loans.report_loan_summaries"
             file="loans.report_loan_summaries"
             attachment_use="True"
-            attachment="'(object.company_id.name) Loan Summaries.pdf'"
+            attachment="'Loan Summaries.pdf'"
         />
 
-
         <template id="report_loan_summaries">
-            <t t-call="web.html_container">
-                <t t-set="count" t-value="0"/>
-                <div class="page">
-                    <h2>Loan Summaries</h2>
-                    <table class="table table-condensed">
-                        <thead>
-                            <tr>
-                                <th>Company</th>
-                                <th>Bank</th>
-                                <th>Credit Line</th>
-                                <th>Total Principal Amount</th>
-                                <th>Available Balance</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <t t-foreach="docs" t-as="doc">
-                                <tr t-if="count % 10 == 0" t-set="count" t-value="count + 1"/>
-                                <tr>
-                                    <td><span t-field="doc.company_id.name"/></td>
-                                    <td><span t-field="doc.bank_id.name"/></td>
-                                    <td><span t-field="doc.credit_line"/></td>
-                                    <td><span t-field="principal"/></td>
-                                    <td><span t-field="available_balance"/></td>
-                                </tr>
-                            </t>
-                        </tbody>
-                    </table>
-                </div>
-            </t>
+            <div class="article o_report_layout_standard" t-att-data-oe-model="doc and doc._name" t-att-data-oe-id="doc and doc.id">
+                <t t-call="web.html_container">
+                    <t t-foreach="docs" t-as="doc">
+                        <div class="page">
+                            <h2>Loan Summaries</h2>
+                            <table class="table table-condensed">
+                                <thead>
+                                    <tr>
+                                        <th>Company</th>
+                                        <th>Bank</th>
+                                        <th>Credit Line</th>
+                                        <th>Total Principal Amount</th>
+                                        <th>Available Balance</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><span t-field="doc.company_id.name"/></td>
+                                        <td><span t-field="doc.bank_id.name"/></td>
+                                        <td><span t-field="doc.credit_line"/></td>
+                                        <td><span t-field="doc.principal"/></td>
+                                        <td><span t-field="doc.available_balance"/></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </t>
+                </t>
+            </div>
         </template>
 
 
     </data>
-</odoo> -->
+</odoo>
