@@ -1,47 +1,25 @@
 <odoo>
     <data>
+        
+        <report
+            id="report_loan_summary_html"
+            model="loans.summary"
+            string="Loan Summary HTML"
+            name="elms.report_loan_summaries"
+            report_type="qweb-html"
+            file="elms.report_loan_summaries"
+
+        />
+        
         <report
             id="report_loan_summary"
             model="loans.summary"
             string="Loan Summary"
-            name="loans.report_loan_summaries"
+            name="elms.report_loan_summaries"
             report_type="qweb-pdf"
-            file="loans.report_loan_summaries"
+            file="elms.report_loan_summaries"
             menu="True"
         />
-        <template id="report_loan_summaries">
-            <t t-call="web.html_container">
-                <t t-foreach="docs" t-as="summaries">
-                    <div class="page">
-                        <h2>Loan Summary</h2>
-                        <p>Bank ID: <span t-field="summary.bank_id.name"/></p>
-                        <p>Company ID: <span t-field="summary.company_id.name"/></p>
-                        <p>Principal: <span t-field="summary.principal"/></p>
-                        <p>Credit Line: <span t-field="summary.credit_line"/></p>
-                        <p>Available Balance: <span t-field="summary.available_balance"/></p>
-                    </div>
-                </t>
-            </t>
-        </template>
-    </data>
-</odoo>
-
-
-<!-- <odoo>
-    <data>
-
-        <report
-            id="report_loan_summary"
-            string="Loan Summary"
-            model="loans.summary"
-            report_type="qweb-pdf"
-            name="loans.report_loan_summaries"
-            file="loans.report_loan_summaries"
-            attachment_use="True"
-            attachment="'(object.company_id.name) Loan Summaries.pdf'"
-        />
-
-
         <template id="report_loan_summaries">
             <t t-call="web.html_container">
                 <t t-set="count" t-value="0"/>
@@ -64,8 +42,8 @@
                                     <td><span t-field="doc.company_id.name"/></td>
                                     <td><span t-field="doc.bank_id.name"/></td>
                                     <td><span t-field="doc.credit_line"/></td>
-                                    <td><span t-field="principal"/></td>
-                                    <td><span t-field="available_balance"/></td>
+                                    <td><span t-field="doc.principal"/></td>
+                                    <td><span t-field="doc.available_balance"/></td>
                                 </tr>
                             </t>
                         </tbody>
@@ -74,6 +52,5 @@
             </t>
         </template>
 
-
     </data>
-</odoo> -->
+</odoo>
