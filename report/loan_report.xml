@@ -3,12 +3,22 @@
     <data>
 
         <report
+            id="report_loan_entry_html"
+            model="loans.main"
+            string="Loan Entries HTML"
+            name="elms.report_loan_entries"
+            report_type="qweb-html"
+            file="elms.report_loan_entries"
+
+        />
+        
+        <report
             id="report_loan_entry"
             string="Loan Entries"
             model="loans.main"
             report_type="qweb-pdf"
-            name="loans.report_loan_entries"
-            file="loans.report_loan_entries"
+            name="elms.report_loan_entries"
+            file="elms.report_loan_entries"
             attachment_use="True"
             attachment="'(object.company_name.name) Loan Entries.pdf'"
         />
