@@ -3,6 +3,11 @@ from datetime import datetime, timedelta
 from odoo import models, fields, api
 import humanize
 
+class LoanType(models.Model):
+     _name='loans.type'
+     _description='Loan Types'
+
+     name = fields.Char(string='Loan Type')
 
 class LoansStage(models.Model):
     _name = 'loans.stage'
@@ -29,6 +34,7 @@ class loans(models.Model):
      company_name = fields.Many2one('res.partner', string="Company", tracking=True)
      loan_date=fields.Date('Date', required=True, tracking=True)
      bank_name=fields.Many2one('res.bank', string="Bank", required=True, tracking=True)
+     loan_type=fields.Many2one('loans.type', string="Loan Type", default=lambda self: self._default_stage(), tracking=True)
      pn_number=fields.Char('PN Number', required=True, tracking=True)
      principal=fields.Float('Principal', tracking=True)
      interest=fields.Float('Interest', tracking=True)

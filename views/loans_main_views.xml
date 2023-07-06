@@ -55,6 +55,7 @@
                                 <group>
                                     <field name="type_1" class="oe_inline"/>
                                     <field name="type_2" class="oe_inline"/>
+                                    <field name="loan_type" class="oe_inline"/>
                                 </group>
                             </group>
                         </page>
@@ -88,6 +89,7 @@
                 <field name="settlement_entry" optional="hide"/>
                 <field name="type_1"/>
                 <field name="type_2"/>
+                <field name="loan_type"/>
                 <field name="stage"/>
             </tree>
         </field>
@@ -156,6 +158,7 @@
                 <group> 
                     <field name="company_id"/>
                     <field name="bank_id"/>
+                    <field name="type"/>
                     <field name="credit_line"/>
                     <field name="principal"/>
                 </group>
@@ -170,6 +173,7 @@
             <tree>
                 <field name="company_id" groupby="True"/>
                 <field name="bank_id" groupby="True"/>
+                <field name="type" groupby="True"/>
                 <field name="credit_line" sum="Total Credit Line"/>
                 <!-- <field name="credit_line"/> -->
                 <field name="principal" sum="Total Principal Amount"/>
@@ -191,6 +195,13 @@
         <field name="name">Stages</field>
         <field name="type">ir.actions.act_window</field>
         <field name="res_model">loans.stage</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <record id="loans_type_action" model="ir.actions.act_window">
+        <field name="name">Loan Types</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">loans.type</field>
         <field name="view_mode">tree,form</field>
     </record>
 
@@ -216,6 +227,10 @@
     </record>
 
     <record id="new_stage_id" model="loans.stage">
+        <field name="name">New</field>
+    </record>
+
+    <record id="new_type_id" model="loans.type">
         <field name="name">New</field>
     </record>
 
@@ -252,6 +267,14 @@
         parent="menu_loans_configuration" 
         sequence="12"
         action="loans_banks_action"/>
+
+    <menuitem id="menu_loans_type" 
+        name="Loan Types"
+        parent="menu_loans_configuration" 
+        sequence="12"
+        action="loans_type_action"/>
+
+
     
     
 
