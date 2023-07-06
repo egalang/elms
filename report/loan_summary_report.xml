@@ -12,7 +12,8 @@
         />
         
         <report
-            id="report_loan_summary"
+            id="report_loan_summary_html"
+            string="Loan Summary HTML"
             model="loans.summary"
             string="Loan Summary"
             name="elms.report_loan_summaries"
