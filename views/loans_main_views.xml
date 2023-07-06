@@ -53,8 +53,8 @@
                                     <field name="remarks" class="oe_inline"/>
                                 </group>
                                 <group>
-                                    <field name="type_1" class="oe_inline"/>
-                                    <field name="type_2" class="oe_inline"/>
+                                    <!-- <field name="type_1" class="oe_inline"/> -->
+                                    <!-- <field name="type_2" class="oe_inline"/> -->
                                     <field name="loan_type" class="oe_inline"/>
                                 </group>
                             </group>
@@ -87,8 +87,8 @@
                 <field name="remarks"/>
                 <field name="availment_entry" optional="hide"/>
                 <field name="settlement_entry" optional="hide"/>
-                <field name="type_1"/>
-                <field name="type_2"/>
+                <!-- <field name="type_1"/> -->
+                <!-- <field name="type_2"/> -->
                 <field name="loan_type"/>
                 <field name="stage"/>
             </tree>
