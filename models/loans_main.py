@@ -39,7 +39,7 @@ class loans(models.Model):
      principal=fields.Float('Principal', tracking=True)
      interest=fields.Float('Interest', tracking=True)
      DST=fields.Float('DST', tracking=True)
-     total_amount=fields.Float('Total Amount', tracking=True)
+     total_amount=fields.Float('Total Amount', compute='_compute_total_amount', store=True, readonly=True, tracking=True)
      remarks=fields.Text('REMARKS', tracking=True)
      #type_1=fields.Char('Type I', tracking=True)
      #type_2=fields.Char('Type II', tracking=True)
@@ -87,3 +87,8 @@ class loans(models.Model):
         action = self.env.ref('loans_summary.view_loan_summary_form').read()[0]
         action['domain'] = [('company_id', '=', self.company_name.id)]
         return action
+     
+     @api.depends('principal', 'interest', 'DST')
+     def _compute_total_amount(self):
+          for record in self:
+               record.total_amount = record.principal + record.interest + record.DST
