@@ -10,7 +10,7 @@ class LoanSummary(models.Model):
     principal = fields.Float('Total Principal Amount', compute='_compute_total_amount')
     credit_line = fields.Float('Credit Line')
     available_balance = fields.Float('Available Balance', compute='_compute_available_balance')
-    type=fields.Many2one('loans.type', string='Loan Type')
+    type=fields.Many2one('loans.type', string='Loan Type', default=lambda self: self._default_type())
 
     def _compute_total_amount(self):
         for summary in self:
@@ -26,6 +26,10 @@ class LoanSummary(models.Model):
         for summary in self:
             summary.available_balance = summary.credit_line - summary.principal
 
+    def _default_type(self):
+        type = self.env['loans.type'].search([('name', '=', 'New')], limit=1)
+        return type
+
     
     
     def display_loan_records(self):
@@ -35,7 +39,7 @@ class LoanSummary(models.Model):
             ('bank_name', '=', self.bank_id.id),
             ('loan_type', '=', self.type.id)
         ])
-        action = self.env.ref('elms.loans_main_action')  # Replace 'module_name' with the actual module name
+        action = self.env.ref('elms.loans_main_action')  
         result = action.read()[0]
         result['domain'] = [('id', 'in', loans.ids)]
         return result
