@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from datetime import datetime, timedelta
 from odoo import models, fields, api
+from odoo.exceptions import ValidationError
 import humanize
 
 class LoanType(models.Model):
@@ -44,7 +45,7 @@ class loans(models.Model):
      #type_1=fields.Char('Type I', tracking=True)
      #type_2=fields.Char('Type II', tracking=True)
      availment_entry=fields.Char('Availment Entry', tracking=True)
-     settlement_entry=fields.Char('Settlement Entry', tracking=True)
+     settlement_entry=fields.Char('Settlement Entry', tracking=True, compute='_compute_settlement_entry', store=True, readonly=False)
      stage = fields.Many2one('loans.stage', string="Stage", default=lambda self: self._default_stage(), tracking=True)
      payment_type = fields.Selection([
           ('full_payment', 'Full Payment Required'),
@@ -92,3 +93,12 @@ class loans(models.Model):
      def _compute_total_amount(self):
           for record in self:
                record.total_amount = record.principal + record.interest + record.DST
+
+     def _is_settlement_entry_required(self):
+          return self.stage.name == 'Posted'
+     
+     @api.constrains('stage', 'settlement_entry')
+     def _check_settlement_entry_required(self):
+          for record in self:
+               if record.stage.name == 'Posted' and not record.settlement_entry:
+                    raise ValidationError("Settlement Entry is required when the stage is set to 'Posted'.")

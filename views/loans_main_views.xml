@@ -16,7 +16,7 @@
         <field name="arch" type="xml">
         <form>
             <header>
-                <field name="stage" widget="statusbar" options="{'clickable':'1'}" />
+                <field name="stage" widget="statusbar" options="{'clickable':'bottom'}" />
             </header>
             <sheet>
                 <div class="oe_title">
