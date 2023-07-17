@@ -37,11 +37,14 @@ class loans(models.Model):
      bank_name=fields.Many2one('res.bank', string="Bank", required=True, tracking=True)
      loan_type=fields.Many2one('loans.type', string="Loan Type", default=lambda self: self._default_stage(), tracking=True)
      pn_number=fields.Char('PN Number', required=True, tracking=True)
-     principal=fields.Float('Principal', tracking=True)
-     interest=fields.Float('Interest', tracking=True)
-     DST=fields.Float('DST', tracking=True)
-     total_amount=fields.Float('Total Amount', compute='_compute_total_amount', store=True, readonly=True, tracking=True)
+     pn_count=fields.Integer('PN Count', required=True, default='1', tracking=True)
      remarks=fields.Text('REMARKS', tracking=True)
+     amount = fields.Float('Amount', require=True, tracking=True)
+     amount_type = fields.Selection([
+          ('principal', 'Principal'),
+          ('interest', 'Interest'),
+          ('dst', 'DST'),
+          ], string='Amount Type', default='principal', tracking=True)
      #type_1=fields.Char('Type I', tracking=True)
      #type_2=fields.Char('Type II', tracking=True)
      availment_entry=fields.Char('Availment Entry', tracking=True)
@@ -61,7 +64,7 @@ class loans(models.Model):
      def name_get(self):
            result = []
            for record in self:
-                formatted_amount = humanize.intcomma(round(record.total_amount, 2))
+                formatted_amount = humanize.intcomma(round(record.amount, 2))
                 name = f"{formatted_amount}"
                 result.append((record.id, name))
            return result
@@ -88,11 +91,6 @@ class loans(models.Model):
         action = self.env.ref('loans_summary.view_loan_summary_form').read()[0]
         action['domain'] = [('company_id', '=', self.company_name.id)]
         return action
-     
-     @api.depends('principal', 'interest', 'DST')
-     def _compute_total_amount(self):
-          for record in self:
-               record.total_amount = record.principal + record.interest + record.DST
 
      def _is_settlement_entry_required(self):
           return self.stage.name == 'Posted'

@@ -18,9 +18,10 @@ class LoanSummary(models.Model):
                 ('company_name', '=', summary.company_id.id),
                 ('bank_name', '=', summary.bank_id.id),
                 ('loan_type', '=', summary.type.id),
-                ('stage', '<>', 'Matured'), ('stage', '<>', 'Paid')
+                ('amount_type', '=', 'principal'),
+                ('stage', 'not in', ['Matured', 'Paid'])
             ])
-            summary.principal = sum(loans.mapped('principal'))
+            summary.principal = sum(loans.mapped('amount'))
 
     def _compute_available_balance(self):
         for summary in self:
