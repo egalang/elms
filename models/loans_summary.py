@@ -19,13 +19,23 @@ class LoanSummary(models.Model):
                 ('bank_name', '=', summary.bank_id.id),
                 ('loan_type', '=', summary.type.id),
                 ('amount_type', '=', 'principal'),
-                ('stage', 'not in', ['Matured', 'Paid'])
+                ('stage', 'not in', ['Matured', 'Paid', 'Posted'])
             ])
             summary.principal = sum(loans.mapped('amount'))
 
     def _compute_available_balance(self):
         for summary in self:
-            summary.available_balance = summary.credit_line - summary.principal
+            loans_to_subtract = self.env['loans.main'].search([
+                ('company_name', '=', summary.company_id.id),
+                ('bank_name', '=', summary.bank_id.id),
+                ('amount_type', '=', 'principal'),
+                ('loan_type', '=', summary.type.id),
+                '&', ('term_loan', '=', True), ('stage', 'in', ['Paid', 'Matured', 'Posted'])
+            ])
+            subtracted_amount = sum(loans_to_subtract.mapped('amount'))
+            summary.available_balance = summary.credit_line - summary.principal - subtracted_amount
+
+
 
     def _default_type(self):
         type = self.env['loans.type'].search([('name', '=', 'New')], limit=1)

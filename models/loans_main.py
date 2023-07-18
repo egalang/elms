@@ -39,6 +39,7 @@ class loans(models.Model):
      pn_number=fields.Char('PN Number', required=True, tracking=True)
      pn_count=fields.Integer('PN Count', required=True, default='1', tracking=True)
      remarks=fields.Text('REMARKS', tracking=True)
+     term_loan=fields.Boolean('Term Loan?', tracking=True)
      amount = fields.Float('Amount', require=True, tracking=True)
      amount_type = fields.Selection([
           ('principal', 'Principal'),
