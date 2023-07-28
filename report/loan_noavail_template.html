@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Outstanding Loans Without Availment Entry</title>
+</head>
+<body style="font-family: Arial, sans-serif; margin: 20px;">
+    <h1 style="text-align: center; margin-bottom: 20px;">Outstanding Loans Without Availment Entry Report</h1>
+    <p style="text-align: center;">Generated as of {{ current_date }}</p>
+    <table style="width: 100%; border-collapse: collapse;">
+        <tr>
+            <th style="border: 1px solid black; padding: 8px; text-align: center;">Loan Date</th>
+            <th style="border: 1px solid black; padding: 8px; text-align: center;">Stage</th>
+            <th style="border: 1px solid black; padding: 8px; text-align: center;">PN Number</th>
+            <th style="border: 1px solid black; padding: 8px; text-align: center;">PN Count</th>
+            <th style="border: 1px solid black; padding: 8px; text-align: center;">Company</th>
+            <th style="border: 1px solid black; padding: 8px; text-align: center;">Bank</th>
+            <th style="border: 1px solid black; padding: 8px; text-align: center;">Amount</th>
+            <th style="border: 1px solid black; padding: 8px; text-align: center;">Amount Type</th>
+            <th style="border: 1px solid black; padding: 8px; text-align: center;">Payment Type</th>
+            <th style="border: 1px solid black; padding: 8px; text-align: center;">Loan Type</th>
+            
+        </tr>
+        {% for record in loan_main_records %}
+        <tr>
+            <td style="border: 1px solid black; padding: 8px; text-align: center;">{{ record.loan_date }}</td>
+            <td style="border: 1px solid black; padding: 8px; text-align: center;">{{ record.loan_stage }}</td>
+            <td style="border: 1px solid black; padding: 8px; text-align: center;">{{ record.pn_number }}</td>
+            <td style="border: 1px solid black; padding: 8px; text-align: center;">{{ record.pn_count }}</td>
+            <td style="border: 1px solid black; padding: 8px; text-align: center;">{{ record.company }}</td>
+            <td style="border: 1px solid black; padding: 8px; text-align: center;">{{ record.bank }}</td>
+            <td style="border: 1px solid black; padding: 8px; text-align: center;">{{ record.amount }}</td>
+            <td style="border: 1px solid black; padding: 8px; text-align: center;">{{ record.amount_type }}</td>
+            <td style="border: 1px solid black; padding: 8px; text-align: center;">{{ record.payment_type }}</td>
+            <td style="border: 1px solid black; padding: 8px; text-align: center;">{{ record.type }}</td>
+            
+        </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>
