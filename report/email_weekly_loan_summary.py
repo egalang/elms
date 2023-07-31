@@ -33,6 +33,18 @@ def fetch_loan_summaries():
             {'fields': ['company_id', 'bank_id', 'principal', 'credit_line', 'available_balance', 'type']}
         )[0]
 
+        principal = summary['principal']
+        formatted_principal = '{:,.2f}'.format(principal)
+        summary['principal'] = formatted_principal
+
+        credit_line = summary['credit_line']
+        formatted_credit_line = '{:,.2f}'.format(credit_line)
+        summary['credit_line'] = formatted_credit_line
+
+        available_balance = summary['available_balance']
+        formatted_available_balance = '{:,.2f}'.format(available_balance)
+        summary['available_balance'] = formatted_available_balance
+
         # Fetch additional data for related fields (company_id and bank_id)
         company_name = models.execute_kw(
             db, uid, password, 'res.partner', 'read',

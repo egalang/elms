@@ -7,6 +7,7 @@ from email.mime.text import MIMEText
 from email.mime.application import MIMEApplication
 from datetime import datetime, timedelta, date
 from dateutil.relativedelta import relativedelta
+import locale
 
 # XML-RPC Connection Parameters
 url = 'http://localhost:8069'
@@ -43,6 +44,10 @@ def fetch_loan_main_records():
             [loan_main_id],
             {'fields': ['loan_date', 'pn_number', 'pn_count', 'company_name', 'bank_name', 'amount', 'amount_type', 'payment_type', 'loan_type', 'stage']}
         )[0]
+
+        amount = loan_main_record['amount']
+        formatted_amount = '{:,.2f}'.format(amount)
+        loan_main_record['amount'] = formatted_amount
 
         # Fetch additional data for related fields (company_name and bank_name)
         company_id = models.execute_kw(
