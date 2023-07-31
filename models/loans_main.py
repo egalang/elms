@@ -4,6 +4,12 @@ from odoo import models, fields, api
 from odoo.exceptions import ValidationError
 import humanize
 
+class HeadEmails(models.Model):
+     _name='head.emails'
+     _description='Head Emails'
+
+     name = fields.Char(string='Head Emails')
+
 class LoanType(models.Model):
      _name='loans.type'
      _description='Loan Types'
@@ -61,6 +67,7 @@ class loans(models.Model):
           ('rental_pdc', 'Rental w/ PDCs')
     ], string='Action', default='full_payment', tracking=True)
      color = fields.Integer('Color', compute='_compute_color', tracking=True)
+     head_emails = fields.Many2one('head.emails', string="Head Emails")
      
      def name_get(self):
            result = []

@@ -106,16 +106,30 @@ def send_email_with_pdf():
     sender_email = 'webdev@obanana.com'
     sender_password = '+sTXz,.YkuBs'
 
-    receiver_email = 'jobaseniero@gmail.com'
-
     # Convert HTML to PDF
     pdf_file = 'loan_monthly_report.pdf'
     pdfkit.from_file('loan_monthly_report.html', pdf_file)
 
+    # Fetch head_emails from Odoo using XML-RPC
+    common = xmlrpc.client.ServerProxy(f'{url}/xmlrpc/2/common')
+    uid = common.authenticate(db, username, password, {})
+    models = xmlrpc.client.ServerProxy(f'{url}/xmlrpc/2/object')
+
+    # Fetch email addresses from the head_emails custom model
+    head_emails_ids = models.execute_kw(db, uid, password, 'head.emails', 'search', [[]])
+    head_emails_records = models.execute_kw(
+        db, uid, password, 'head.emails', 'read',
+        [head_emails_ids],
+        {'fields': ['name']}
+    )
+
+    # Create a list of email addresses from the fetched records
+    receiver_emails = [record['name'] for record in head_emails_records]
+
     # Compose the email message
     msg = MIMEMultipart()
     msg['From'] = sender_email
-    msg['To'] = receiver_email
+    msg['To'] = ', '.join(receiver_emails)
     msg['Subject'] = 'Monthly Outstanding and Funded Loans Report'
 
     # Add a message to the email body
@@ -142,7 +156,7 @@ Obanana Business Solutions
     with smtplib.SMTP('mail.obanana.com', 26) as server:
         server.starttls()
         server.login(sender_email, sender_password)
-        server.sendmail(sender_email, receiver_email, msg.as_string())
+        server.sendmail(sender_email, receiver_emails, msg.as_string())
 
     print('Email sent successfully!')
 

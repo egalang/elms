@@ -188,6 +188,13 @@
         <field name="target">current</field>
     </record>
 
+    <record id="head_emails_action" model="ir.actions.act_window">
+        <field name="name">Head Emails</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">head.emails</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
     <record id="loans_stages_action" model="ir.actions.act_window">
         <field name="name">Stages</field>
         <field name="type">ir.actions.act_window</field>
@@ -270,5 +277,13 @@
         parent="menu_loans_configuration" 
         sequence="12"
         action="loans_type_action"/>
+
+    <menuitem id="menu_head_emails" 
+        name="Head Emails"
+        parent="menu_loans_configuration" 
+        sequence="12"
+        action="head_emails_action"/>
+
+    
 
 </odoo>
