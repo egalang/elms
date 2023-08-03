@@ -11,18 +11,18 @@ import locale
 import requests
 
 # XML-RPC Connection Parameters
-url = 'http://localhost:8069'
+url_odoo = 'http://localhost:8069'
 db = 'Odoo'
 username = 'odoo@obanana.com'
 password = 'Obanana2023'
 
 def fetch_loan_main_records():
     # Connect to Odoo via XML-RPC
-    common = xmlrpc.client.ServerProxy(f'{url}/xmlrpc/2/common')
+    common = xmlrpc.client.ServerProxy(f'{url_odoo}/xmlrpc/2/common')
     uid = common.authenticate(db, username, password, {})
 
     # Create an object to call Odoo's API methods
-    models = xmlrpc.client.ServerProxy(f'{url}/xmlrpc/2/object')
+    models = xmlrpc.client.ServerProxy(f'{url_odoo}/xmlrpc/2/object')
 
     # Calculate the date range for the month of August
     today = datetime.today()
@@ -31,6 +31,7 @@ def fetch_loan_main_records():
 
     # Search for Loan Main records with dates in the month of August and stage "New" or "Funded"
     domain = [
+        ['amount_type', '=', 'interest'],
         ['loan_date', '>=', next_month_start.strftime('%Y-%m-%d')],
         ['loan_date', '<=', next_month_end.strftime('%Y-%m-%d')],
         '|', ['stage', '=', 'New'], ['stage', '=', 'Funded']
@@ -86,7 +87,7 @@ def generate_url_string(loan_records):
         formatted_amount = loan_record['amount']  # Make sure this is formatted as needed
         url_parts.append(f"{day},{bank_name}: {formatted_amount}")
 
-    url = 'https://admin.obananapay.com/temp/calendar.php?string=' + '|'.join(url_parts)
+    url = 'http://66.187.5.172/calendar.php?type=Interest&string=' + '|'.join(url_parts)
     return url
 
 
@@ -95,11 +96,13 @@ def convert_html_to_pdf(url):
     response = requests.get(url)
     html_content = response.text
 
-    # Convert HTML to PDF
-    pdf_file = 'loan_monthly_calendar.pdf'
-    pdfkit.from_string(html_content, pdf_file)
-
-    print('PDF report generated successfully!')
+    # Convert HTML to PDF in landscape orientation
+    pdf_file = 'loan_monthly_calendar_interest.pdf'
+    options = {
+        'page-size': 'Letter',
+        'orientation': 'Landscape'  # Set orientation to Landscape
+    }
+    pdfkit.from_string(html_content, pdf_file, options=options)
 
 # Update the send_email_with_pdf function to use the new HTML file name
 def send_email_with_pdf():
@@ -108,13 +111,13 @@ def send_email_with_pdf():
     sender_password = '+sTXz,.YkuBs'
 
     # Convert HTML to PDF
-    pdf_file = 'loan_monthly_calendar.pdf'
+    pdf_file = 'loan_monthly_calendar_interest.pdf'
     #pdfkit.from_file('loan_monthly_report.html', pdf_file)
 
     # Fetch head_emails from Odoo using XML-RPC
-    common = xmlrpc.client.ServerProxy(f'{url}/xmlrpc/2/common')
+    common = xmlrpc.client.ServerProxy(f'{url_odoo}/xmlrpc/2/common')
     uid = common.authenticate(db, username, password, {})
-    models = xmlrpc.client.ServerProxy(f'{url}/xmlrpc/2/object')
+    models = xmlrpc.client.ServerProxy(f'{url_odoo}/xmlrpc/2/object')
 
     # Fetch email addresses from the head_emails custom model
     head_emails_ids = models.execute_kw(db, uid, password, 'head.emails', 'search', [[]])
@@ -131,13 +134,13 @@ def send_email_with_pdf():
     msg = MIMEMultipart()
     msg['From'] = sender_email
     msg['To'] = ', '.join(receiver_emails)
-    msg['Subject'] = 'Monthly Outstanding and Funded Loans Report'
+    msg['Subject'] = 'Monthly Outstanding and Funded Loans Calendar (Interest)'
 
     # Add a message to the email body
     email_body = """
 Dear recipient,
 
-Please find the monthly outstanding and funded loans report attached.
+Please find the monthly outstanding and funded loans report for Interest Records attached.
 
 Thank you.
 

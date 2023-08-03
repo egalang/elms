@@ -95,7 +95,11 @@ def export_loan_summary_to_html():
 def convert_html_to_pdf():
     # Convert HTML to PDF
     pdf_file = 'loan_summary_report.pdf'
-    pdfkit.from_file('loan_summary_report.html', pdf_file)
+    options = {
+        'page-size': 'Letter',
+        'orientation': 'Landscape'
+    }
+    pdfkit.from_file('loan_summary_report.html', pdf_file, options=options)
 
     print('PDF report generated successfully!')
 
@@ -106,7 +110,7 @@ def send_email_with_pdf():
 
     # Convert HTML to PDF
     pdf_file = 'loan_summary_report.pdf'
-    pdfkit.from_file('loan_summary_report.html', pdf_file)
+    #pdfkit.from_file('loan_summary_report.html', pdf_file)
 
     # Fetch head_emails from Odoo using XML-RPC
     common = xmlrpc.client.ServerProxy(f'{url}/xmlrpc/2/common')
