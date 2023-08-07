@@ -1,11 +1,12 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Monthly Outstanding and Funded Loans</title>
+    <title>Monthly Paid Loans</title>
 </head>
 <body style="font-family: Arial, sans-serif; margin: 20px;">
-    <h1 style="text-align: center; margin-bottom: 20px;">Monthly Outstanding and Funded Loans Report</h1>
-    <p style="text-align: center; margin-bottom: 10px;">Report generated for the dates: {{ start_date }} to {{ end_date }}</p>
+    <h1 style="text-align: center; margin-bottom: 20px;">Monthly Paid Loans Report</h1>
+    <p style="text-align: center;">Generated as of {{ current_date }}</p>
+    <!-- <p style="text-align: center; margin-bottom: 10px;">Report generated for the dates: {{ start_date }} to {{ end_date }}</p> -->
     <table style="width: 100%; border-collapse: collapse;">
         <tr>
             <th style="border: 1px solid black; padding: 8px; text-align: center;">Loan Date</th>
@@ -17,7 +18,7 @@
             <th style="border: 1px solid black; padding: 8px; text-align: center;">Amount</th>
             <th style="border: 1px solid black; padding: 8px; text-align: center;">Amount Type</th>
             <th style="border: 1px solid black; padding: 8px; text-align: center;">Payment Type</th>
-            <th style="border: 1px solid black; padding: 8px; text-align: center;">Loan Type</th>
+            <!-- <th style="border: 1px solid black; padding: 8px; text-align: center;">Loan Type</th> -->
             
         </tr>
         {% for record in loan_main_records %}
@@ -31,7 +32,7 @@
             <td style="border: 1px solid black; padding: 8px; text-align: center;">{{ record.amount }}</td>
             <td style="border: 1px solid black; padding: 8px; text-align: center;">{{ record.amount_type }}</td>
             <td style="border: 1px solid black; padding: 8px; text-align: center;">{{ record.payment_type }}</td>
-            <td style="border: 1px solid black; padding: 8px; text-align: center;">{{ record.type }}</td>
+            <!-- <td style="border: 1px solid black; padding: 8px; text-align: center;">{{ record.type }}</td> -->
             
         </tr>
         {% endfor %}

@@ -9,7 +9,7 @@ from datetime import datetime, timedelta, date
 import datetime
 
 # XML-RPC Connection Parameters
-url = 'http://localhost:8069'
+url_odoo = 'http://localhost:8069'
 db = 'Odoo'
 username = 'odoo@obanana.com'
 password = 'Obanana2023'
@@ -58,7 +58,7 @@ def fetch_loan_main_records():
         # Append the fetched data to the loan_main_record dictionary
         loan_main_record['company'] = company_id
         loan_main_record['bank'] = bank_id
-        loan_main_record['type'] = loan_main_record['loan_type'][1]
+        #loan_main_record['type'] = loan_main_record['loan_type'][1]
         loan_main_record['loan_stage'] = loan_main_record['stage'][1]
 
         loan_main_records.append(loan_main_record)

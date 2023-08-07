@@ -44,7 +44,7 @@ def fetch_loan_main_records():
         loan_main_record = models.execute_kw(
             db, uid, password, 'loans.main', 'read',
             [loan_main_id],
-            {'fields': ['loan_date', 'pn_number', 'pn_count', 'company_name', 'bank_name', 'amount', 'amount_type', 'payment_type', 'loan_type', 'stage']}
+            {'fields': ['loan_date', 'pn_number', 'pn_count', 'company_name', 'bank_name', 'amount', 'amount_type', 'payment_type', 'loan_type', 'stage', 'color']}
         )[0]
 
         amount = loan_main_record['amount']
@@ -84,8 +84,9 @@ def generate_url_string(loan_records):
         loan_date = loan_record['loan_date']  # Assuming 'loan_date' is already a string in 'YYYY-MM-DD' format
         day = loan_date.split('-')[2]  # Extract day from the 'loan_date' string
         bank_name = loan_record['bank_name'][1]
+        color = loan_record['color']
         formatted_amount = loan_record['amount']  # Make sure this is formatted as needed
-        url_parts.append(f"{day},{bank_name}: {formatted_amount}")
+        url_parts.append(f"{day},{bank_name}: {formatted_amount}:{color}")
 
     url = 'http://66.187.5.172/calendar.php?type=Interest&string=' + '|'.join(url_parts)
     return url

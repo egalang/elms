@@ -6,11 +6,10 @@ from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from email.mime.application import MIMEApplication
 from datetime import datetime, timedelta, date
-from dateutil.relativedelta import relativedelta
-import locale
+import datetime
 
 # XML-RPC Connection Parameters
-url = 'http://localhost:8069'
+url_odoo = 'http://localhost:8069'
 db = 'Odoo'
 username = 'odoo@obanana.com'
 password = 'Obanana2023'
@@ -24,15 +23,16 @@ def fetch_loan_main_records():
     models = xmlrpc.client.ServerProxy(f'{url}/xmlrpc/2/object')
 
     # Calculate the date range for the month of August
-    today = datetime.today()
-    next_month_start = today.replace(month=today.month + 1, day=1) if today.month < 12 else today.replace(year=today.year + 1, month=1, day=1)
-    next_month_end = (next_month_start.replace(day=1) + timedelta(days=32)).replace(day=1) - timedelta(days=1)
+    # today = datetime.today()
+    # next_month_start = today.replace(month=today.month, day=1) if today.month < 12 else today.replace(year=today.year + 1, month=1, day=1)
+    # next_month_end = (next_month_start.replace(day=1) + timedelta(days=32)).replace(day=1) - timedelta(days=1)
 
     # Search for Loan Main records with dates in the month of August and stage "New" or "Funded"
     domain = [
-        ['loan_date', '>=', next_month_start.strftime('%Y-%m-%d')],
-        ['loan_date', '<=', next_month_end.strftime('%Y-%m-%d')],
-        '|', ['stage', '=', 'New'], ['stage', '=', 'Funded']
+        ['stage', '=', 'Paid']
+        #['loan_date', '>=', next_month_start.strftime('%Y-%m-%d')],
+        #['loan_date', '<=', next_month_end.strftime('%Y-%m-%d')]
+        # '|', ['stage', '=', 'New'], ['stage', '=', 'Funded']
     ]
     loan_main_ids = models.execute_kw(db, uid, password, 'loans.main', 'search', [domain])
 
@@ -65,7 +65,7 @@ def fetch_loan_main_records():
         # Append the fetched data to the loan_main_record dictionary
         loan_main_record['company'] = company_id
         loan_main_record['bank'] = bank_id
-        loan_main_record['type'] = loan_main_record['loan_type'][1]
+        # loan_main_record['type'] = loan_main_record['loan_type'][1]
         loan_main_record['loan_stage'] = loan_main_record['stage'][1]
 
         loan_main_records.append(loan_main_record)
@@ -79,24 +79,29 @@ def export_loan_main_to_html():
     # Fetch the loan main records from Odoo for the entire next month
     loan_main_records = fetch_loan_main_records()
 
-    today = datetime.today()
-    next_month_start = today.replace(month=today.month + 1, day=1) if today.month < 12 else today.replace(year=today.year + 1, month=1, day=1)
-    next_month_end = (next_month_start.replace(day=1) + timedelta(days=32)).replace(day=1) - timedelta(days=1)
-
     # Load the HTML template
     env = Environment(loader=FileSystemLoader('.'))
     template = env.get_template('loan_monthly_template.html')
 
-    # Render the template with the data and date range for the month of August
-    html_output = template.render(loan_main_records=loan_main_records,
-                                  start_date=next_month_start.strftime('%Y-%m-%d'),
-                                  end_date=next_month_end.strftime('%Y-%m-%d'))
+    # Get the current date
+    current_date = datetime.date.today()
 
+    # today = datetime.today()
+    # next_month_start = today.replace(month=today.month, day=1) if today.month < 12 else today.replace(year=today.year + 1, month=1, day=1)
+    # next_month_end = (next_month_start.replace(day=1) + timedelta(days=32)).replace(day=1) - timedelta(days=1)
+
+    # Render the template with the data and date range for the month of August
+    html_output = template.render(loan_main_records=loan_main_records, current_date=current_date)
+
+    # html_output = template.render(loan_main_records=loan_main_records,
+    #                               start_date=next_month_start.strftime('%Y-%m-%d'),
+    #                               end_date=next_month_end.strftime('%Y-%m-%d'))
+    
     # Save the HTML output to a file
     with open('loan_monthly_report.html', 'w') as html_file:
         html_file.write(html_output)
 
-    print('HTML report generated successfully!')
+    print('HTML report generated successfully!')    
 
 def convert_html_to_pdf():
     # Convert HTML to PDF

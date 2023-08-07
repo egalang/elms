@@ -48,6 +48,7 @@
                             <group>
                                 <group>
                                     <field name="availment_entry" class="oe_inline"/>
+                                    <field name="availment_date" class="oe_inline"/>
                                     <field name="settlement_entry" class="oe_inline"/>
                                     <field name="remarks" class="oe_inline"/>
                                 </group>

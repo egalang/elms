@@ -8,7 +8,7 @@ from email.mime.application import MIMEApplication
 import datetime
 
 # XML-RPC Connection Parameters
-url = 'http://localhost:8069'
+url_odoo = 'http://localhost:8069'
 db = 'Odoo'
 username = 'odoo@obanana.com'
 password = 'Obanana2023'

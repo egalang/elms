@@ -39,7 +39,7 @@ class loans(models.Model):
     ]
 
      company_name = fields.Many2one('res.partner', string="Company", tracking=True)
-     loan_date=fields.Date('Date', required=True, tracking=True)
+     loan_date=fields.Date('Due Date', required=True, tracking=True)
      bank_name=fields.Many2one('res.bank', string="Bank", required=True, tracking=True)
      loan_type=fields.Many2one('loans.type', string="Loan Type", default=lambda self: self._default_stage(), tracking=True)
      pn_number=fields.Char('PN Number', required=True, tracking=True)
@@ -55,6 +55,7 @@ class loans(models.Model):
      #type_1=fields.Char('Type I', tracking=True)
      #type_2=fields.Char('Type II', tracking=True)
      availment_entry=fields.Char('Availment Entry', tracking=True)
+     availment_date=fields.Date('Availment Date', tracking=True)
      settlement_entry=fields.Char('Settlement Entry', tracking=True, compute='_compute_settlement_entry', store=True, readonly=False)
      stage = fields.Many2one('loans.stage', string="Stage", default=lambda self: self._default_stage(), tracking=True)
      payment_type = fields.Selection([
