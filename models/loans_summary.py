@@ -11,6 +11,11 @@ class LoanSummary(models.Model):
     credit_line = fields.Float('Credit Line')
     available_balance = fields.Float('Available Balance', compute='_compute_available_balance')
     type=fields.Many2one('loans.type', string='Loan Type', default=lambda self: self._default_type())
+    loan_class = fields.Selection([
+          ('long_term', 'Long Term'),
+          ('short_term', 'Short Term'),
+          ('back_back', 'Back to Back')
+          ], string="Loan Class", default='long_term')
 
     def _compute_total_amount(self):
         for summary in self:

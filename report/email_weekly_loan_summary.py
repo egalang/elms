@@ -11,9 +11,10 @@ import datetime
 url_odoo = 'http://localhost:8069'
 db = 'Odoo'
 username = 'odoo@obanana.com'
-password = 'Obanana2023'
+password = 'Obanana2023' 
+companies = ['PMI', 'MAC', 'FLTC', 'CSC', 'IMC', 'PLC', 'MBI', 'IHDC']
 
-def fetch_loan_summaries():
+def fetch_loan_summaries(company):
     # Connect to Odoo via XML-RPC
     common = xmlrpc.client.ServerProxy(f'{url}/xmlrpc/2/common')
     uid = common.authenticate(db, username, password, {})
@@ -21,8 +22,12 @@ def fetch_loan_summaries():
     # Create an object to call Odoo's API methods
     models = xmlrpc.client.ServerProxy(f'{url}/xmlrpc/2/object')
 
+    domain = [
+        ['company_id', '=', company]
+    ]
+
     # Search for Loan Summary records
-    summary_ids = models.execute_kw(db, uid, password, 'loans.summary', 'search', [[]])
+    summary_ids = models.execute_kw(db, uid, password, 'loans.summary', 'search', [domain])
 
     # Read data for each Loan Summary record, and fetch additional data for related fields
     summaries = []
@@ -30,7 +35,7 @@ def fetch_loan_summaries():
         summary = models.execute_kw(
             db, uid, password, 'loans.summary', 'read',
             [summary_id],
-            {'fields': ['company_id', 'bank_id', 'principal', 'credit_line', 'available_balance', 'type']}
+            {'fields': ['company_id', 'bank_id', 'principal', 'credit_line', 'available_balance', 'type', 'loan_class']}
         )[0]
 
         principal = summary['principal']
@@ -70,27 +75,65 @@ def fetch_loan_summaries():
     return summaries
 
 def export_loan_summary_to_html():
-    # Fetch the loan summaries from Odoo and sort them by bank name
-    summaries = fetch_loan_summaries()
+    summaries = fetch_loan_summaries(companies)
+    subtotals = compute_subtotals(summaries)  # Calculate subtotals
 
-    # Load the HTML template
+    # Load the HTML template and render it with the data
     env = Environment(loader=FileSystemLoader('.'))
     template = env.get_template('loan_summary_template.html')
-
-    # Get the current date
     current_date = datetime.date.today()
-
-    # Render the template with the data and current date
-    html_output = template.render(summaries=summaries, current_date=current_date)
-
-    # Render the template with the data
-    # html_output = template.render(summaries=summaries)
+    html_output = template.render(
+        summaries=summaries,
+        current_date=current_date,
+        totals=totals,
+        subtotals=subtotals  # Pass the subtotals dictionary to the template
+    )
 
     # Save the HTML output to a file
     with open('loan_summary_report.html', 'w') as html_file:
         html_file.write(html_output)
 
     print('HTML report generated successfully!')
+
+
+
+def compute_totals(summaries):
+    totals = {'Grand Total': {'credit_line': 0, 'principal': 0, 'available_balance': 0}}
+
+    for summary in summaries:
+        company = summary['company']
+
+        # Initialize subtotals for the company if not already present
+        if company not in totals:
+            totals[company] = {'credit_line': 0, 'principal': 0, 'available_balance': 0}
+
+        # Update subtotals for the company and grand total
+        for field in ['credit_line', 'principal', 'available_balance']:
+            value = float(summary[field].replace(',', ''))
+            totals[company][field] += value
+            totals['Grand Total'][field] += value
+
+    return totals
+
+def compute_subtotals(summaries):
+    subtotals = {}
+
+    for summary in summaries:
+        company = summary['company']
+        loan_class = summary['loan_class']
+
+        if company not in subtotals:
+            subtotals[company] = {}
+
+        if loan_class not in subtotals[company]:
+            subtotals[company][loan_class] = {'credit_line': 0, 'principal': 0, 'available_balance': 0}
+
+        for field in ['credit_line', 'principal', 'available_balance']:
+            value = float(summary[field].replace(',', ''))
+            subtotals[company][loan_class][field] += value
+
+    return subtotals
+
 
 def convert_html_to_pdf():
     # Convert HTML to PDF
@@ -163,6 +206,8 @@ Obanana Business Solutions
     print('Email sent successfully!')
 
 if __name__ == "__main__":
+    summaries = fetch_loan_summaries(companies)
+    totals = compute_totals(summaries)
     export_loan_summary_to_html()
     convert_html_to_pdf()
     send_email_with_pdf()

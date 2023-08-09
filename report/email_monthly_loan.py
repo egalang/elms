@@ -16,11 +16,11 @@ password = 'Obanana2023'
 
 def fetch_loan_main_records():
     # Connect to Odoo via XML-RPC
-    common = xmlrpc.client.ServerProxy(f'{url}/xmlrpc/2/common')
+    common = xmlrpc.client.ServerProxy(f'{url_odoo}/xmlrpc/2/common')
     uid = common.authenticate(db, username, password, {})
 
     # Create an object to call Odoo's API methods
-    models = xmlrpc.client.ServerProxy(f'{url}/xmlrpc/2/object')
+    models = xmlrpc.client.ServerProxy(f'{url_odoo}/xmlrpc/2/object')
 
     # Calculate the date range for the month of August
     # today = datetime.today()
@@ -125,9 +125,9 @@ def send_email_with_pdf():
     #pdfkit.from_file('loan_monthly_report.html', pdf_file)
 
     # Fetch head_emails from Odoo using XML-RPC
-    common = xmlrpc.client.ServerProxy(f'{url}/xmlrpc/2/common')
+    common = xmlrpc.client.ServerProxy(f'{url_odoo}/xmlrpc/2/common')
     uid = common.authenticate(db, username, password, {})
-    models = xmlrpc.client.ServerProxy(f'{url}/xmlrpc/2/object')
+    models = xmlrpc.client.ServerProxy(f'{url_odoo}/xmlrpc/2/object')
 
     # Fetch email addresses from the head_emails custom model
     head_emails_ids = models.execute_kw(db, uid, password, 'head.emails', 'search', [[]])

@@ -9,24 +9,48 @@
     <table style="width: 100%;border-collapse: collapse;">
         <tr>
             <th style="border: 1px solid black;padding: 8px;text-align: center;">Company</th>
+            <th style="border: 1px solid black;padding: 8px;text-align: center;">Loan Class</th>
             <th style="border: 1px solid black;padding: 8px;text-align: center;">Loan Type</th>
             <th style="border: 1px solid black;padding: 8px;text-align: center;">Bank</th>
             <th style="border: 1px solid black;padding: 8px;text-align: center;">Credit Line</th>
             <th style="border: 1px solid black;padding: 8px;text-align: center;">Outstanding Amount</th>
             <th style="border: 1px solid black;padding: 8px;text-align: center;">Available Balance</th>
-            
         </tr>
         {% for summary in summaries %}
         <tr>
             <td style="border: 1px solid black;padding: 8px;text-align: center;">{{ summary.company }}</td>
+            <td style="border: 1px solid black;padding: 8px;text-align: center;">{{ summary.loan_class }}</td>
             <td style="border: 1px solid black;padding: 8px;text-align: left;">{{ summary.loan_type }}</td>
             <td style="border: 1px solid black;padding: 8px;text-align: center;">{{ summary.bank }}</td>
             <td style="border: 1px solid black;padding: 8px;text-align: right;">{{ summary.credit_line }}</td>
             <td style="border: 1px solid black;padding: 8px;text-align: right;">{{ summary.principal }}</td>
             <td style="border: 1px solid black;padding: 8px;text-align: right;">{{ summary.available_balance }}</td>
-            
         </tr>
         {% endfor %}
+
+        {% for company, subtotals_by_loan_class in subtotals.items() %}
+        {% for loan_class, subtotal in subtotals_by_loan_class.items() %}
+        <tr>
+            <th style="border: 1px solid black;padding: 8px;text-align: center;">{{ company }} - {{ loan_class }} Subtotal</th>
+            <th style="border: 1px solid black;padding: 8px;text-align: right;"></th>
+            <th style="border: 1px solid black;padding: 8px;text-align: right;"></th>
+            <th style="border: 1px solid black;padding: 8px;text-align: right;"></th>
+            <th style="border: 1px solid black;padding: 8px;text-align: right;">{{ '{:,.2f}'.format(subtotal.credit_line|float) }}</th>
+            <th style="border: 1px solid black;padding: 8px;text-align: right;">{{ '{:,.2f}'.format(subtotal.principal|float) }}</th>
+            <th style="border: 1px solid black;padding: 8px;text-align: right;">{{ '{:,.2f}'.format(subtotal.available_balance|float) }}</th>
+        </tr>
+        {% endfor %}
+        {% endfor %}
+
+        <tr>
+            <th style="border: 1px solid black;padding: 8px;text-align: center;">Grand Total</th>
+            <th style="border: 1px solid black;padding: 8px;text-align: right;"></th>
+            <th style="border: 1px solid black;padding: 8px;text-align: right;"></th>
+            <th style="border: 1px solid black;padding: 8px;text-align: right;"></th>
+            <th style="border: 1px solid black;padding: 8px;text-align: right;">{{ '{:,.2f}'.format(totals['Grand Total'].credit_line|float) }}</th>
+            <th style="border: 1px solid black;padding: 8px;text-align: right;">{{ '{:,.2f}'.format(totals['Grand Total'].principal|float) }}</th>
+            <th style="border: 1px solid black;padding: 8px;text-align: right;">{{ '{:,.2f}'.format(totals['Grand Total'].available_balance|float) }}</th>
+        </tr>
     </table>
 </body>
 </html>

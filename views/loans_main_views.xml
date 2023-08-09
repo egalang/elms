@@ -156,6 +156,7 @@
                 <group> 
                     <field name="company_id"/>
                     <field name="bank_id"/>
+                    <field name="loan_class"/>
                     <field name="type"/>
                     <field name="credit_line"/>
                     <field name="principal"/>
@@ -171,6 +172,7 @@
             <tree>
                 <field name="company_id" groupby="True"/>
                 <field name="bank_id" groupby="True"/>
+                <field name="loan_class"/>
                 <field name="type" groupby="True"/>
                 <field name="credit_line" sum="Total Credit Line"/>
                 <!-- <field name="credit_line"/> -->
