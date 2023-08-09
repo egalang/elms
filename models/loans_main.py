@@ -67,6 +67,9 @@ class loans(models.Model):
           ('partial_payment', 'Partial Payment'),
           ('rental_pdc', 'Rental w/ PDCs')
     ], string='Action', default='full_payment', tracking=True)
+     
+     
+          
      color = fields.Integer('Color', compute='_compute_color', tracking=True)
      head_emails = fields.Many2one('head.emails', string="Head Emails")
      
