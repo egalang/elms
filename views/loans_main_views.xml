@@ -87,6 +87,7 @@
                 <field name="payment_type"/>
                 <field name="remarks" optional="hide"/>
                 <field name="availment_entry" optional="hide"/>
+                <field name="availment_date" optional="hide"/>
                 <field name="settlement_entry" optional="hide"/>
                 <!-- <field name="type_1"/> -->
                 <!-- <field name="type_2"/> -->

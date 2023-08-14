@@ -6,13 +6,21 @@ from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from email.mime.application import MIMEApplication
 import datetime
+import argparse
 
 # XML-RPC Connection Parameters
 url_odoo = 'http://localhost:8069'
 db = 'Odoo'
 username = 'odoo@obanana.com'
-password = 'Obanana2023' 
-companies = ['PMI', 'MAC', 'FLTC', 'CSC', 'IMC', 'PLC', 'MBI', 'IHDC']
+password = 'Obanana2023'
+#companies = ['PMI']
+
+loan_class_names = {
+    'long_term': 'Long Term',
+    'short_term': 'Short Term',
+    'back_back': 'Back to Back'
+}
+
 
 def fetch_loan_summaries(company):
     # Connect to Odoo via XML-RPC
@@ -67,6 +75,8 @@ def fetch_loan_summaries(company):
         summary['company'] = company_name
         summary['bank'] = bank_name
         summary['loan_type'] = summary['type'][1]
+        summary['loan_class'] = loan_class_names.get(summary['loan_class'], '')
+
         summaries.append(summary)
 
     # Sort the summaries list by bank name in alphabetical order
@@ -74,8 +84,8 @@ def fetch_loan_summaries(company):
 
     return summaries
 
-def export_loan_summary_to_html():
-    summaries = fetch_loan_summaries(companies)
+def export_loan_summary_to_html(totals, company):
+    summaries = fetch_loan_summaries([company])
     subtotals = compute_subtotals(summaries)  # Calculate subtotals
 
     # Load the HTML template and render it with the data
@@ -205,9 +215,16 @@ Obanana Business Solutions
 
     print('Email sent successfully!')
 
-if __name__ == "__main__":
-    summaries = fetch_loan_summaries(companies)
+def main(company):
+    summaries = fetch_loan_summaries([company])  # Pass the company directly as a list
     totals = compute_totals(summaries)
-    export_loan_summary_to_html()
+    export_loan_summary_to_html(totals, company) 
     convert_html_to_pdf()
     send_email_with_pdf()
+
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description='Generate and send loan summary reports.')
+    parser.add_argument('company', metavar='COMPANY', type=str, help='the company name for the report')
+
+    args = parser.parse_args()
+    main(args.company)
