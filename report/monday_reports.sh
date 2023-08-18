@@ -1,0 +1,12 @@
+#!/bin/bash
+cd /mnt/extra-addons/elms/report
+python3 email_weekly_loan_summary_executive.py CSC
+python3 email_weekly_loan_summary_executive.py FLTC
+python3 email_weekly_loan_summary_executive.py IHDC
+python3 email_weekly_loan_summary_executive.py IMC
+python3 email_weekly_loan_summary_executive.py MAC
+python3 email_weekly_loan_summary_executive.py MBI
+python3 email_weekly_loan_summary_executive.py PLC
+python3 email_weekly_loan_summary_executive.py PMI
+python3 email_weekly_noavail.py
+python3 email_monthly_loan.py

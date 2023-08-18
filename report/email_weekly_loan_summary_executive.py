@@ -9,10 +9,10 @@ import datetime
 import argparse
 
 # XML-RPC Connection Parameters
-url_odoo = 'http://localhost:8069'
-db = 'Odoo'
-username = 'odoo@obanana.com'
-password = 'Obanana2023'
+url = 'http://172.22.0.3:8069'
+db = 'lms.pivi.com.ph'
+username = 'jobaseniero@gmail.com'
+password = 'P@$$w0rd!'
 #companies = ['PMI']
 
 loan_class_names = {
@@ -156,7 +156,7 @@ def convert_html_to_pdf():
 
     print('PDF report generated successfully!')
 
-def send_email_with_pdf():
+def send_email_with_pdf(company):
     # Replace these with your email and password
     sender_email = 'webdev@obanana.com'
     sender_password = '+sTXz,.YkuBs'
@@ -185,17 +185,16 @@ def send_email_with_pdf():
     msg = MIMEMultipart()
     msg['From'] = sender_email
     msg['To'] = ', '.join(receiver_emails)
-    msg['Subject'] = 'Weekly Loan Summary Report'
+    msg['Subject'] = 'Weekly Loan Summary Report - ' + company
 
     # Add a message to the email body
     email_body = """
-Dear recipient,
+Dear Sir/Ma'am,
 
-Please find the weekly loan summary report attached.
+Please find attached Weekly Loan Summary Report attached.
 
-Thank you.
 
-Best regards,
+Thank and best regards,
 Obanana Business Solutions
     """
     body_part = MIMEText(email_body)
@@ -220,7 +219,7 @@ def main(company):
     totals = compute_totals(summaries)
     export_loan_summary_to_html(totals, company) 
     convert_html_to_pdf()
-    send_email_with_pdf()
+    send_email_with_pdf(company)
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='Generate and send loan summary reports.')

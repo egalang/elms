@@ -118,7 +118,7 @@
                                     <li>Bank: <field name="bank_name"/></li>
                                     <li>Company: <field name="company_name"/></li>
                                     <li>Principal: <field name="amount"/></li>
-                                    <li>Interest: <field name="amount_type"/></li>
+                                    <li>Amount Type: <field name="amount_type"/></li>
                                     <!-- <p>PN Number: <field name="pn_number"/></p>
                                     <p>Principal: <field name="principal"/></p>
                                     <p>Interest: <field name="interest"/></p>

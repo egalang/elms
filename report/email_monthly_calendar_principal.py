@@ -11,10 +11,10 @@ import locale
 import requests
 
 # XML-RPC Connection Parameters
-url_odoo = 'http://localhost:8069'
-db = 'Odoo'
-username = 'odoo@obanana.com'
-password = 'Obanana2023'
+url_odoo = 'http://172.22.0.3:8069'
+db = 'lms.pivi.com.ph'
+username = 'jobaseniero@gmail.com'
+password = 'P@$$w0rd!'
 
 def fetch_loan_main_records():
     # Connect to Odoo via XML-RPC

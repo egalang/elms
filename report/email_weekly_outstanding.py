@@ -8,10 +8,10 @@ from email.mime.application import MIMEApplication
 from datetime import datetime, timedelta, date
 
 # XML-RPC Connection Parameters
-url_odoo = 'http://localhost:8069'
-db = 'Odoo'
-username = 'odoo@obanana.com'
-password = 'Obanana2023'
+url = 'http://172.22.0.3:8069'
+db = 'lms.pivi.com.ph'
+username = 'jobaseniero@gmail.com'
+password = 'P@$$w0rd!'
 
 def fetch_loan_main_records():
     # Connect to Odoo via XML-RPC
@@ -141,13 +141,13 @@ def send_email_with_pdf():
 
     # Add a message to the email body
     email_body = """
-Dear recipient,
+Dear Sir/Ma'am,
 
-Please find the weekly outstanding and funded loans report attached.
+Please find attached Weekly Outstanding and Funded Loans Report.
 
-Thank you.
 
-Best regards,
+Thanks and best regards,
+
 Obanana Business Solutions
     """
     body_part = MIMEText(email_body)
