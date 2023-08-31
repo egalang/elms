@@ -10,7 +10,7 @@ from datetime import datetime, timedelta, date
 # XML-RPC Connection Parameters
 url = 'http://172.22.0.3:8069'
 db = 'lms.pivi.com.ph'
-username = 'jobaseniero@gmail.com'
+username = 'webdev@obanana.com'
 password = 'P@$$w0rd!'
 
 def fetch_loan_main_records():

@@ -14,7 +14,7 @@
 # url = 'http://localhost:8069'
 # db = 'Odoo'
 # username = 'odoo@obanana.com'
-# password = 'Obanana2023'
+# password = 'P@$$w0rd!'
 
 # def fetch_loan_main_records():
 #     # Connect to Odoo via XML-RPC
@@ -92,7 +92,7 @@
 #     sender_email = 'webdev@obanana.com'
 #     sender_password = '+sTXz,.YkuBs'
 
-#     receiver_email = 'jobaseniero@gmail.com'
+#     receiver_email = 'webdev@obanana.com'
 
 #     # Convert HTML to PDF
 #     pdf_file = 'loan_main_report.pdf'
